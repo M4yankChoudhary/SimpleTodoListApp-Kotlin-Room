@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import me.mayankchoudhary.simpletodolist.databinding.FragmentToodoListBinding
+import me.mayankchoudhary.simpletodolist.model.Todo
 import me.mayankchoudhary.simpletodolist.viewModel.TodoViewModel
 import me.mayankchoudhary.simpletodolist.viewModel.TodoViewModelFactory
 
@@ -17,6 +19,8 @@ class TodoListFragment : Fragment() {
 
     private var _binding: FragmentToodoListBinding? = null
     private val binding get() = _binding!!
+
+    var currentTodo: Todo? = null
 
 //    private val recyclerView: RecyclerView? = null
 
@@ -43,7 +47,11 @@ class TodoListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = TodoListAdapter()
+
+        val adapter = TodoListAdapter() {
+            viewModel.deleteTodo(it.id)
+            Toast.makeText(context, "Todo deleted successfully", Toast.LENGTH_SHORT).show()
+        }
         binding.apply {
             recylerView?.adapter = adapter
             floatingActionButton.setOnClickListener {
@@ -53,8 +61,10 @@ class TodoListFragment : Fragment() {
             viewModel.allTodos.observe(viewLifecycleOwner) { todo ->
                 adapter.submitList(todo)
             }
+
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

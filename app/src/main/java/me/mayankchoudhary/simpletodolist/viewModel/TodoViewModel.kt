@@ -13,6 +13,13 @@ class TodoViewModel(private val todoDao: TodoDao) : ViewModel() {
     // Cache all items form the database using LiveData.
     val allTodos: LiveData<List<Todo>> = todoDao.getAllTodo().asLiveData()
 
+    // delete todo
+    fun deleteTodo(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            todoDao.deleteTodo(id)
+        }
+    }
+
     // *************  add or insert
     fun addNewTodo(name: String) {
         val newItem = getNewTodoEntry(name)
