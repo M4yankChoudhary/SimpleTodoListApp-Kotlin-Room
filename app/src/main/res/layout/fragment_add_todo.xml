@@ -22,7 +22,7 @@
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:ems="10"
-                android:maxLength="20"
+                android:maxLength="50"
                 android:gravity="start"
                 android:hint="Enter your task"
                 android:inputType="textPersonName"

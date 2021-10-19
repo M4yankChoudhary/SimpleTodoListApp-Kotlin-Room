@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="me.mayankchoudhary.simpletodolist.viewModel.TodoViewModel" />
     </data>
 
     <FrameLayout
@@ -22,8 +24,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyler_view"
                 android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:listData="@{viewModel.allTodos}"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

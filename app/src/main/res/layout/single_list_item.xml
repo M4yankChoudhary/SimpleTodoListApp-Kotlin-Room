@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+    <variable
+        name="todoName"
+        type="me.mayankchoudhary.simpletodolist.model.Todo" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -10,29 +14,45 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:elevation="10dp">
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content">
 
-        android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/isCompletedTodo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:checked="@{todoName.isCompleted}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"/>
+
+
 
         <TextView
-            android:id="@+id/task"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:text="@{todoName.name}"
+            android:background="@{todoName.isCompleted ? @drawable/strike_through : @drawable/not_strike_through}"
             android:textSize="24sp"
-            android:text="Hello" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/delete_button"
+            app:layout_constraintStart_toEndOf="@+id/isCompletedTodo"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="end"
+            android:background="@drawable/ic_baseline_delete_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/delete_button"
-                android:background="@drawable/ic_baseline_delete_24"
-                android:layout_gravity="end"
-                android:layout_width="35dp"
-                android:layout_height="35dp" />
 
-
-
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

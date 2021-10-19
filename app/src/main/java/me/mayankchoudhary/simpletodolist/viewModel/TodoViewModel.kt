@@ -20,6 +20,13 @@ class TodoViewModel(private val todoDao: TodoDao) : ViewModel() {
         }
     }
 
+    // updateTodo
+    fun updateTodoItem(isCompleted: Boolean, id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            todoDao.updateTodo(!isCompleted, id)
+        }
+    }
+
     // *************  add or insert
     fun addNewTodo(name: String) {
         val newItem = getNewTodoEntry(name)

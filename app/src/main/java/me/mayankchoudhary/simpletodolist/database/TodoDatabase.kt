@@ -12,7 +12,7 @@ import me.mayankchoudhary.simpletodolist.model.Todo
 //3. Perform any additional setup, such as pre-populating the database.
 
 // extend room database
-@Database(entities = [Todo::class], version = 1)
+@Database(entities = [Todo::class], version = 2)
 abstract class TodoDatabase : RoomDatabase() {
     abstract fun todoDao(): TodoDao
 //    When using an AppDatabase class, you want to ensure that only one

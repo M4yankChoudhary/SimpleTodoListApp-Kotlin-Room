@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import me.mayankchoudhary.simpletodolist.databinding.SingleListItemBinding
 import me.mayankchoudhary.simpletodolist.model.Todo
 
-class TodoListAdapter(private val onItemClicked: (Todo) -> Unit): ListAdapter<Todo, TodoListAdapter.TodoListViewHolder>(TodoComparator()) {
-
-    var pos: Int? = 0
+class TodoListAdapter(
+    private val onItemClicked: (Todo) -> Unit,
+    private val checkItem: (Boolean, Int) -> Unit,
+) : ListAdapter<Todo, TodoListAdapter.TodoListViewHolder>(TodoComparator()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -24,7 +25,7 @@ class TodoListAdapter(private val onItemClicked: (Todo) -> Unit): ListAdapter<To
     override fun onBindViewHolder(holder: TodoListViewHolder, position: Int) {
         val currentItem = getItem(position)
         if (currentItem != null) {
-            holder.bind(currentItem, onItemClicked)
+            holder.bind(currentItem, onItemClicked, checkItem)
         }
 //        holder.itemView.setOnClickListener {
 ////            onItemClicked(currentItem)
@@ -33,12 +34,20 @@ class TodoListAdapter(private val onItemClicked: (Todo) -> Unit): ListAdapter<To
 
     class TodoListViewHolder(private val binding: SingleListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(todo: Todo, onItemClicked: (Todo) -> Unit) {
+        fun bind(todo: Todo, onItemClicked: (Todo) -> Unit, checkItem: (Boolean, Int) -> Unit) {
             binding.apply {
-                task.text = todo.name
+                todoName = todo
                 deleteButton.setOnClickListener {
-                  onItemClicked(todo)
+                    onItemClicked(todo)
                 }
+                isCompletedTodo.setOnCheckedChangeListener { buttonView, isChecked ->
+                    checkItem(!isChecked, todo.id)
+                }
+                executePendingBindings()
+//                isCompletedTodo.setOnCheckedChangeListener { buttonView, isChecked ->
+//                    onItemClicked(todo, "UPDATE")
+////                    isCompletedTodo.isChecked = !todo.isCompleted
+//                }
             }
         }
     }
