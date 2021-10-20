@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/toodoListFragment"
         android:name="me.mayankchoudhary.simpletodolist.TodoListFragment"
-        android:label="Simple Todo List"
+        android:label="Tasks"
         tools:layout="@layout/fragment_toodo_list">
         <action
             android:id="@+id/action_toodoListFragment_to_addTodoFragment"

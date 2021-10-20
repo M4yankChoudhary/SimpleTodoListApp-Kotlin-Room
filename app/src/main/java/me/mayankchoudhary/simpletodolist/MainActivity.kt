@@ -2,12 +2,14 @@ package me.mayankchoudhary.simpletodolist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import androidx.navigation.ui.onNavDestinationSelected
 //import me.mayankchoudhary.simpletodolist.databinding.ActivityMainBinding
-import java.security.AccessController
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 

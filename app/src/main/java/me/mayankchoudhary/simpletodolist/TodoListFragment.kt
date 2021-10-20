@@ -1,19 +1,20 @@
 package me.mayankchoudhary.simpletodolist
 
 import android.os.Bundle
+import android.text.Editable
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.ui.onNavDestinationSelected
 import me.mayankchoudhary.simpletodolist.databinding.FragmentToodoListBinding
 import me.mayankchoudhary.simpletodolist.model.Todo
 import me.mayankchoudhary.simpletodolist.viewModel.TodoViewModel
 import me.mayankchoudhary.simpletodolist.viewModel.TodoViewModelFactory
+
 
 class TodoListFragment : Fragment() {
 
@@ -33,6 +34,7 @@ class TodoListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -46,27 +48,44 @@ class TodoListFragment : Fragment() {
         binding.lifecycleOwner = this
         // Giving the binding access to the TodoViewModel
         binding.viewModel = viewModel
-        binding.recylerView.adapter = TodoListAdapter({
-            viewModel.deleteTodo(it.id)
-        }, { check, id ->
-            viewModel.updateTodoItem(check, id)
-        })
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        Toast.makeText(context, "Todo deleted successfully", Toast.LENGTH_SHORT).show()
+        val adapter = TodoListAdapter({
+            viewModel.deleteTodo(it.id)
+            Toast.makeText(
+                context, "Todo deleted successfully",
+                Toast.LENGTH_SHORT
+            ).show()
+            binding.searchEditText.setText("")
+        }, { check, id ->
+            viewModel.updateTodoItem(check, id)
+            binding.searchEditText.setText("")
+        })
         binding.apply {
-//            recylerView?.adapter = adapter
+            recylerView.adapter = adapter
             floatingActionButton.setOnClickListener {
                 val action = TodoListFragmentDirections.actionToodoListFragmentToAddTodoFragment()
                 findNavController().navigate(action)
             }
-//            viewModel.allTodos.observe(viewLifecycleOwner) { todo ->
-//                adapter.submitList(todo)
-//            }
+            viewModel!!.allTodos.observe(viewLifecycleOwner) { todo ->
+                progressBar.visibility = View.GONE
+                if (todo.isNullOrEmpty()) {
+                    emptyImage.visibility = View.VISIBLE
+                    emptyText.visibility = View.VISIBLE
+                } else {
+                    emptyImage.visibility = View.GONE
+                    emptyText.visibility = View.GONE
+                }
+                searchEditText.addTextChangedListener { text: Editable? ->
+                    val listFromSearch: List<Todo> = todo.filter { s -> s.name.contains(text.toString(), true) }
+                    adapter.submitList(listFromSearch)
+                }
+            }
+
         }
     }
 
@@ -74,4 +93,18 @@ class TodoListFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        super.onCreateOptionsMenu(menu, inflater)
+//        inflater?.inflate(R.menu.menu_item, menu)
+//    }
+//
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if(item.itemId == R.id.my_search) {
+//            Log.d("MyText", "Hello")
+//            true
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 }
