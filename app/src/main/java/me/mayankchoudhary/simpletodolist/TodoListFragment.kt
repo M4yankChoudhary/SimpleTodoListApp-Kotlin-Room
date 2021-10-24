@@ -69,8 +69,9 @@ class TodoListFragment : Fragment() {
         binding.apply {
             recylerView.adapter = adapter
             floatingActionButton.setOnClickListener {
-                val action = TodoListFragmentDirections.actionToodoListFragmentToAddTodoFragment()
-                findNavController().navigate(action)
+//                val action = TodoListFragmentDirections.actionToodoListFragmentToAddTodoFragment()
+//                findNavController().navigate(action)
+                AddTodoFragment().show(childFragmentManager, AddTodoFragment.TAG)
             }
             viewModel?.allTodos?.observe(viewLifecycleOwner) { todo ->
                 progressBar.visibility = View.GONE

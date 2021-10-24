@@ -8,23 +8,27 @@
     </data>
 
     <FrameLayout
+        android:background="@drawable/dialog_round_bg"
+        android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".AddTodoFragment">
 
         <!-- TODO: Update blank fragment layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="200dp">
+
 
             <EditText
                 android:id="@+id/taskName"
-                android:layout_width="300dp"
+                android:layout_width="250dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="76dp"
                 android:ems="10"
+                android:padding="8dp"
                 android:gravity="start"
-                android:hint="Enter your task"
+                android:hint="Enter your task..."
                 android:inputType="textPersonName"
                 android:maxLength="50"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -32,18 +36,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <Button
                 android:id="@+id/add_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="24dp"
                 android:clickable="true"
+                android:text="Add"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/ic_baseline_done_24" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="Add new task"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

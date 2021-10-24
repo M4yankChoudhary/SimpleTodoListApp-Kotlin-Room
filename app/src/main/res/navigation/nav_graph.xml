@@ -19,9 +19,5 @@
         android:id="@+id/addTodoFragment"
         android:name="me.mayankchoudhary.simpletodolist.AddTodoFragment"
         android:label="Add New Todo"
-        tools:layout="@layout/fragment_add_todo">
-        <action
-            android:id="@+id/action_addTodoFragment_to_toodoListFragment"
-            app:destination="@id/toodoListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_add_todo"/>
 </navigation>

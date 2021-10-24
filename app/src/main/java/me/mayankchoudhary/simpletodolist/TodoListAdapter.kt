@@ -27,9 +27,6 @@ class TodoListAdapter(
         if (currentItem != null) {
             holder.bind(currentItem, onItemClicked, checkItem)
         }
-//        holder.itemView.setOnClickListener {
-////            onItemClicked(currentItem)
-//        }
     }
 
     class TodoListViewHolder(private val binding: SingleListItemBinding) :
@@ -42,6 +39,9 @@ class TodoListAdapter(
                 }
                 isCompletedTodo.setOnCheckedChangeListener { buttonView, isChecked ->
                     checkItem(!isChecked, todo.id)
+                }
+                itemView.setOnClickListener {
+                    checkItem(isCompletedTodo.isChecked, todo.id)
                 }
                 executePendingBindings()
 //                isCompletedTodo.setOnCheckedChangeListener { buttonView, isChecked ->
