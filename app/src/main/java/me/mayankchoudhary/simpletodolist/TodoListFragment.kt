@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -60,10 +61,10 @@ class TodoListFragment : Fragment() {
                 context, "Todo deleted successfully",
                 Toast.LENGTH_SHORT
             ).show()
-            binding.searchEditText.setText("")
+//            binding.searchEditText.setText("")
         }, { check, id ->
             viewModel.updateTodoItem(check, id)
-            binding.searchEditText.setText("")
+//            binding.searchEditText.setText("")
         })
         binding.apply {
             recylerView.adapter = adapter
@@ -71,7 +72,7 @@ class TodoListFragment : Fragment() {
                 val action = TodoListFragmentDirections.actionToodoListFragmentToAddTodoFragment()
                 findNavController().navigate(action)
             }
-            viewModel!!.allTodos.observe(viewLifecycleOwner) { todo ->
+            viewModel?.allTodos?.observe(viewLifecycleOwner) { todo ->
                 progressBar.visibility = View.GONE
                 if (todo.isNullOrEmpty()) {
                     emptyImage.visibility = View.VISIBLE
@@ -80,10 +81,11 @@ class TodoListFragment : Fragment() {
                     emptyImage.visibility = View.GONE
                     emptyText.visibility = View.GONE
                 }
-                searchEditText.addTextChangedListener { text: Editable? ->
-                    val listFromSearch: List<Todo> = todo.filter { s -> s.name.contains(text.toString(), true) }
-                    adapter.submitList(listFromSearch)
-                }
+//                searchEditText.addTextChangedListener { text: Editable? ->
+//                    val listFromSearch: List<Todo> =
+//                        todo.filter { s -> s.name.contains(text.toString(), true) }
+//                    adapter.submitList(listFromSearch)
+//                }
             }
 
         }
@@ -94,17 +96,37 @@ class TodoListFragment : Fragment() {
         _binding = null
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        super.onCreateOptionsMenu(menu, inflater)
-//        inflater?.inflate(R.menu.menu_item, menu)
-//    }
-//
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if(item.itemId == R.id.my_search) {
-//            Log.d("MyText", "Hello")
-//            true
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.menu_item, menu)
+        val search = menu.findItem(R.id.my_search)
+        val searchView = search.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    viewModel.getSearched(query)
+                }
+                Log.d("My", "Hello")
+                searchView.clearFocus()
+                binding.recylerView.scrollToPosition(0)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+        })
+        searchView.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(v: View?) {
+
+            }
+
+            override fun onViewDetachedFromWindow(v: View?) {
+                viewModel.getSearched("")
+            }
+
+        })
+    }
 }

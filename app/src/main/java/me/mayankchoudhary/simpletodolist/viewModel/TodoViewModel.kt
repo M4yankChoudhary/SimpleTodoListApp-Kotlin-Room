@@ -3,6 +3,7 @@ package me.mayankchoudhary.simpletodolist.viewModel
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.room.Dao
+import androidx.room.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.mayankchoudhary.simpletodolist.database.TodoDao
@@ -11,7 +12,37 @@ import java.lang.Exception
 
 class TodoViewModel(private val todoDao: TodoDao) : ViewModel() {
     // Cache all items form the database using LiveData.
-    val allTodos: LiveData<List<Todo>> = todoDao.getAllTodo().asLiveData()
+//    private var _allTodos = getSearched("")
+
+    private val currentQuery = MutableLiveData<String>(DEFAULT_QUERY)
+
+    val allTodos = currentQuery.switchMap {
+        if(it == "") {
+            todoDao.getAllTodo().asLiveData()
+        } else {
+            todoDao.GetSearched(it).asLiveData()
+        }
+    }
+//    get() = _allTodos
+
+    init {
+    }
+
+
+//    fun getSearched(query: String): LiveData<List<Todo>> {
+//        if (query == "") {
+//            _allTodos = todoDao.getAllTodo().asLiveData()
+//        } else {
+//            _allTodos = todoDao.GetSearched(query).asLiveData()
+//            Log.d("My", allTodos.toString())
+//        }
+//
+//        return _allTodos
+//    }
+    fun getSearched(query: String){
+        currentQuery.value = query
+    }
+
 
     // delete todo
     fun deleteTodo(id: Int) {
@@ -51,6 +82,11 @@ class TodoViewModel(private val todoDao: TodoDao) : ViewModel() {
         return Todo(
             name = name,
         )
+    }
+
+    companion object {
+        //        private const val CURRENT_QUERY = "current_query"
+        private const val DEFAULT_QUERY = ""
     }
 
 }

@@ -13,6 +13,10 @@ interface TodoDao {
     @Query("SELECT * FROM todo")
     fun getAllTodo(): Flow<List<Todo>>
 
+
+    @Query("SELECT * FROM todo WHERE  name LIKE '%' || :name || '%'")
+    fun GetSearched(name: String): Flow<List<Todo>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(todo: Todo)
 
